@@ -8,10 +8,6 @@ const queryString = location.search;
 const id = new URLSearchParams(queryString).get("id");
 
 const getTodo = async () => {
-  //   fetch(`/api/todos/${id}`)
-  //     .then((response) => response.json())
-  //     .then((todo) => console.log(todo));
-
   try {
     const response = await fetch(`/api/todos/${id}`);
     const jsondata = await response.json();
@@ -57,5 +53,5 @@ editButton.addEventListener("click", async (e) => {
     formAlert.classList.remove("alert-warning");
     formAlert.classList.remove("alert-success");
     location.assign("index.html");
-  }, 3000);
+  }, 1500);
 });

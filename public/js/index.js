@@ -4,26 +4,24 @@ const loader = document.querySelector(".loader");
 const form = document.querySelector(".todo-form");
 const formAlert = document.querySelector(".form-alert");
 const tasksContent = document.querySelector(".tasks-content");
-const deleteButton = document.querySelector(".delete-icon");
-
 // load all todos
-const showTodos = () => {
+const showTodos = async () => {
   loader.style.visibility = "visible";
 
-  // GET from /api/todos
-  fetch("/api/todos")
-    .then((response) => response.json())
-    .then((jsondata) => {
-      if (jsondata.length === 0) {
-        tasksContent.innerHTML = `<h4>No tasks left to do.</h4>`;
-        return;
-      }
-
+  try {
+    const response = await fetch("/api/todos");
+    const jsondata = await response.json();
+    if (jsondata.length === 0) {
+      tasksContent.innerHTML = `<h4>No tasks left to do.</h4>`;
       loader.style.visibility = "hidden";
-      tasksContent.innerHTML = "";
-      jsondata.forEach((todo) => {
-        const { _id: todoId, task: title, completed } = todo;
-        tasksContent.innerHTML += `
+      return;
+    }
+    loader.style.visibility = "hidden";
+    tasksContent.innerHTML = "";
+
+    jsondata.forEach((todo) => {
+      const { _id: todoId, task: title, completed } = todo;
+      tasksContent.innerHTML += `
         <div class="single-task container">
             <h5>
                 <span>
@@ -34,7 +32,7 @@ const showTodos = () => {
                 <span class="task-title ${completed && "strike"}">${title}
                 </span>
             </h5>
-            <span>
+            <span class= "task-icons">
               <a href="edit.html?id=${todoId}" class="edit-icon">
                 <i class="fa fa-clipboard-check"></i>
               </a>
@@ -42,12 +40,12 @@ const showTodos = () => {
             </span>
       </div>
       `;
-      });
-    })
-    .catch((err) => {
-      console.log(err.message, err);
-      tasksContent.innerHTML = `<h4>Something went wrong...</h4>`;
     });
+  } catch (err) {
+    console.log(err.message, err);
+    tasksContent.innerHTML = `<h4>Something went wrong...</h4>`;
+  }
+  deleteTodo();
   loader.style.visibility = "hidden";
 };
 
@@ -95,10 +93,24 @@ submitButton.addEventListener("click", (e) => {
   }, 3000);
 });
 
-// delete todo dont know how to do
-deleteButton.addEventListener("click", (e) => {
-  console.log("clicked");
-  loader.style.visibility = "hidden";
-  const todoId = e.dataset.id;
-  console.log(todoId);
-});
+function deleteTodo() {
+  let testButtons = document.querySelectorAll(".delete-icon");
+
+  for (let i = 0; i < testButtons.length; i++) {
+    testButtons[i].addEventListener("click", async (e) => {
+      e.preventDefault();
+      const id = testButtons[i].dataset.id;
+      loader.style.visibility = "visible";
+      try {
+        await fetch(`/api/todos/${id}`, {
+          method: "DELETE",
+        });
+        showTodos();
+      } catch (err) {
+        console.log(err.message, err);
+        tasksContent.innerHTML = `<h4>Something went wrong...</h4>`;
+      }
+      loader.style.visibility = "hidden";
+    });
+  }
+}
