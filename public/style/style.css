@@ -7,7 +7,6 @@ body {
 }
 
 .navbar {
-  /* background-color: #dee2ed; */
   background-color: white;
   border-bottom: 1px solid #e5e5e5;
   position: absolute;
@@ -53,13 +52,16 @@ main {
   margin-bottom: 1rem;
 }
 
-.todo-form {
+.container {
   max-width: 900px;
   margin: 0 auto;
   margin-top: 2rem;
   background-color: white;
   padding: 2rem 2rem;
   border-radius: 10px;
+}
+
+.todo-form {
 }
 
 .todo-input {
@@ -88,16 +90,16 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 2rem;
 }
 /* loading indicator */
 .loader {
+  visibility: hidden;
   border: 6px solid #c1bebe;
   border-top: 6px solid #399654;
   border-radius: 50%;
   width: 20px;
   height: 20px;
-  animation: spin 2s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+  animation: spin 1s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
 }
 @keyframes spin {
   0% {
@@ -106,4 +108,58 @@ main {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.single-task {
+  display: flex;
+  width: 580px;
+  justify-content: space-between;
+  background-color: white;
+  padding: 0 1rem;
+  align-items: center;
+  text-decoration: none;
+}
+
+.task-title {
+  font-family: "Segoe UI";
+  font-size: 1rem;
+}
+.complete-icon {
+  font-size: 1rem;
+  margin-right: 1rem;
+  color: #399654;
+  visibility: hidden;
+}
+.edit-icon {
+  font-size: 1rem;
+  color: #399654;
+  margin: 0 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.delete-icon {
+  font-size: 1rem;
+  color: red;
+  margin-right: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.strike {
+  text-decoration: line-through;
+}
+.form-alert {
+  font-weight: bold;
+  display: none;
+}
+.alert-warning {
+  color: red;
+}
+.alert-success {
+  color: green;
 }
