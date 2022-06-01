@@ -9,7 +9,7 @@ router.get(
   asyncMiddleware(async (req, res) => {
     if (_.isEmpty(req.query)) {
       console.log("no query found");
-      const todos = await Todo.find().sort("task");
+      const todos = await Todo.find().sort("-_id");
       res.send(todos);
     } else {
       const completed = req.query.completed;
